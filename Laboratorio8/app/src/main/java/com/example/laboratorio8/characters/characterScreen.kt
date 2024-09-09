@@ -54,7 +54,7 @@ fun CharactersScreen(onCharacterClick: (Int) -> Unit) {
             modifier = Modifier.fillMaxSize()
         ) {
             items(characterList) { character ->
-                CharacterRow(character = character, onClick = { onCharacterClick(character.id) })
+
             }
         }
     }
@@ -70,28 +70,18 @@ fun CharacterRow(character: Character, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        val circleColor = when (character.id % 5) {
-            0 -> MaterialTheme.colorScheme.primary
-            1 -> MaterialTheme.colorScheme.secondary
-            2 -> MaterialTheme.colorScheme.tertiary
-            3 -> MaterialTheme.colorScheme.primaryContainer
-            4 -> MaterialTheme.colorScheme.secondaryContainer
-            else -> MaterialTheme.colorScheme.primary
-        }
+
 
         Box(
             modifier = Modifier
                 .size(65.dp)
-                .background(circleColor, CircleShape)
+                
         )
 
         Spacer(modifier = Modifier.width(16.dp))
 
         Column {
 
-            Text(text = character.name, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-
-            Text(text = "${character.species} - ${character.status}", fontSize = 18.sp)
         }
     }
 }
