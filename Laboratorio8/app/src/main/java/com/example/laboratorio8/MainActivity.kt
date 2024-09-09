@@ -9,9 +9,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.laboratorio8.characterDetails.characterDetailScreen
-import com.example.laboratorio8.characterDetails.navigateToCharacterDetail
 import com.example.laboratorio8.characters.characterNavigation
+import com.example.laboratorio8.characterDetails.characterDetailsNavigation
+import com.example.laboratorio8.characterDetails.navigateToCharacterDetail
 import com.example.laboratorio8.login.loginNavigation
 import com.example.laboratorio8.ui.theme.laboratorio8Theme
 
@@ -24,22 +24,18 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = "login",
+                        startDestination = "login", // Empieza en la pantalla de Login
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding)
                     ) {
+                        // Pantalla de Login
+                        loginNavigation(navController = navController)
 
-                        loginNavigation(
-                            navController = navController
-                        )
-
-
+                        // Pantalla de personajes
                         characterNavigation(
                             onCharacterClick = { characterId ->
-                                navController.navigateToCharacterDetail(
-                                    characterId = characterId
-                                )
+                                navController.navigateToCharacterDetail(characterId)
                             },
                             onBackToLogin = {
 
@@ -47,12 +43,8 @@ class MainActivity : ComponentActivity() {
                             }
                         )
 
-
-                        characterDetailScreen(
-                            onNavigateBack = {
-                                navController.navigateUp()
-                            }
-                        )
+                        // Pantalla de detalles del personaje
+                        characterDetailsNavigation(onNavigateBack = { navController.navigateUp() })
                     }
                 }
             }

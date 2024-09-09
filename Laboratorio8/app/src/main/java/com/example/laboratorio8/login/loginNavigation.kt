@@ -12,7 +12,10 @@ fun NavGraphBuilder.loginNavigation(navController: NavController) {
     composable("login") {
         LoginScreen(
             onLoginClick = {
-                navController.navigate("characters")
+                // Navegación al listado de personajes
+                navController.navigate("characters") {
+                    popUpTo("login") { inclusive = true }
+                }
             }
         )
     }

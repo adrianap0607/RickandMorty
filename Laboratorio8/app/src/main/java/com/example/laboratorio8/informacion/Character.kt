@@ -1,3 +1,4 @@
+package com.example.laboratorio8.informacion
 data class Character(
     val id: Int,
     val name: String,
