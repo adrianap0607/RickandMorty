@@ -15,7 +15,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.draw.clip
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
 import com.example.laboratorio9.R
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.ExperimentalMaterial3Api
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun profileRoute(
     onLogoutClick: () -> Unit
@@ -23,39 +26,36 @@ fun profileRoute(
     ProfileScreen(onLogoutClick = onLogoutClick)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit ){
+fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .padding(16.dp)
-        ){
-            Text(
-                text = "Profile",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(bottom = 16.dp)
+        TopAppBar(
+            modifier = Modifier.fillMaxWidth(),
+            title = {
+                Text(
+                    text = "Profile",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
+                )
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary
             )
-        }
-
+        )
 
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 32.dp),
-            verticalArrangement = Arrangement.Center
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(16.dp))
 
             Image(
                 painter = painterResource(id = R.drawable.profile),
@@ -87,11 +87,9 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit ){
 
             Spacer(modifier = Modifier.height(16.dp))
 
-
             Button(onClick = onLogoutClick) {
                 Text("Cerrar sesión")
             }
-
         }
     }
 }
