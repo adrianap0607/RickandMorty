@@ -4,23 +4,20 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CharacterDetailDestination(val characterId: Int)
+data class CharacterInfoDestination(val characterId: Int)
 
-fun NavController.navigateToCharacterDetail(characterId: Int, navOptions: NavOptions? = null) {
-    this.navigate("characterDetail/$characterId", navOptions)
+fun NavController.navigateToCharacterDetailsScreen(destination: CharacterInfoDestination, navOptions: NavOptions? = null){
+    this.navigate(destination, navOptions)
 }
 
-fun NavGraphBuilder.characterDetailsNavigation(onNavigateBack: () -> Unit) {
-    composable("characterDetail/{characterId}") { backStackEntry ->
-        val characterId = backStackEntry.arguments?.getString("characterId")?.toInt() ?: return@composable
+fun NavGraphBuilder.characterInfoScreen(onBackClick: () -> Unit){
+    composable<CharacterInfoDestination> { backStackEntry ->
+        val destination: CharacterInfoDestination = backStackEntry.toRoute()
+        CharacterDetailRoute(characterId = destination.characterId, onBackClick = onBackClick)
 
-
-        CharacterDetailScreen(
-            characterId = characterId,
-            onBackClick = onNavigateBack
-        )
     }
 }

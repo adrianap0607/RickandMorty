@@ -18,7 +18,11 @@ import androidx.compose.ui.unit.sp
 import com.example.laboratorio9.informacion.Character
 import com.example.laboratorio9.informacion.CharacterDb
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
-import com.example.laboratorio9.ui.theme.laboratorio9Theme
+
+@Composable
+fun CharacterRoute(onCharacterClick: (Int) -> Unit){
+    CharactersScreen(onCharacterClick = onCharacterClick)
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

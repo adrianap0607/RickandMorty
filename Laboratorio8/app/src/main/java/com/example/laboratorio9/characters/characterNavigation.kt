@@ -10,16 +10,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object CharacterDestination
 
-fun NavGraphBuilder.characterNavigation(
+fun NavGraphBuilder.characterScreen(
     onCharacterClick: (Int) -> Unit,
-    onBackToLogin: () -> Unit
-) {
-    composable("characters") {
-        CharactersScreen(onCharacterClick = onCharacterClick)
-
-        BackHandler {
-
-            onBackToLogin()
-        }
+){
+    composable<CharacterDestination>{
+        CharacterRoute(
+            onCharacterClick = onCharacterClick
+        )
     }
 }

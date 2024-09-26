@@ -21,7 +21,11 @@ import com.example.laboratorio9.R
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
 
 @Composable
-fun LoginScreen(onLoginClick: () -> Unit = {}) {
+fun LoginRoute(onLoginClick: () -> Unit, modifier:Modifier=Modifier){
+    LoginScreen(onLoginClick = onLoginClick)
+}
+@Composable
+fun LoginScreen(modifier: Modifier = Modifier, onLoginClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,6 +34,7 @@ fun LoginScreen(onLoginClick: () -> Unit = {}) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(1f))
+
 
         Image(
             painter = painterResource(id = R.drawable.rickandmorty),
@@ -40,6 +45,7 @@ fun LoginScreen(onLoginClick: () -> Unit = {}) {
         )
 
         Spacer(modifier = Modifier.height(32.dp))
+
 
         Button(
             onClick = { onLoginClick() },
@@ -65,13 +71,5 @@ fun LoginScreen(onLoginClick: () -> Unit = {}) {
                 .align(Alignment.CenterHorizontally)
                 .padding(bottom = 16.dp)
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewLoginScreen() {
-    laboratorio9Theme {
-        LoginScreen()
     }
 }

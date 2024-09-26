@@ -12,8 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.Color
 import com.example.laboratorio9.informacion.CharacterDb
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
+
+@Composable
+fun CharacterDetailRoute(characterId: Int, onBackClick: () -> Unit){
+    CharacterDetailScreen(characterId = characterId, onBackClick = onBackClick)
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +49,8 @@ fun CharacterDetailScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Back",
+                            tint = Color.White
                         )
                     }
                 },
@@ -65,7 +72,7 @@ fun CharacterDetailScreen(
             Box(
                 modifier = Modifier
                     .size(150.dp)
-                    .background(circleColor, CircleShape) // Color del círculo
+                    .background(circleColor, CircleShape) 
             )
 
             Spacer(modifier = Modifier.height(16.dp))

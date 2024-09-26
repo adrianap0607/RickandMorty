@@ -7,12 +7,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.laboratorio9.locationinformation.Location
 import com.example.laboratorio9.locationinformation.LocationDb
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
+
+@Composable
+fun locationRoute(onLocationClick: (Int) -> Unit){
+    LocationScreen(onLocationClick = onLocationClick)
+}
 
 @Composable
 fun LocationScreen(onLocationClick: (Int) -> Unit) {
@@ -24,12 +30,14 @@ fun LocationScreen(onLocationClick: (Int) -> Unit) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(
-            text = "Locations",
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+        Box(modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.CenterStart){
+            Text(
+                text = "Locations",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(bottom = 16.dp))
+        }
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -66,7 +74,7 @@ fun LocationRow(location: Location, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewLocationScreen() {
-    laboratorio9Theme {
+    laboratorio9Theme   {
         LocationScreen(onLocationClick = {})
     }
 }
