@@ -8,19 +8,24 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.laboratorio9.locationinformation.LocationDb
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 
 @Composable
 fun LocationDetailRoute(locationId: Int, onBackClick: () -> Unit){
     LocationDetailScreen(locationId = locationId, onBackClick = onBackClick)
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationDetailScreen(locationId: Int, onBackClick: () -> Unit) {
     val locationDb = LocationDb()
@@ -29,36 +34,39 @@ fun LocationDetailScreen(locationId: Int, onBackClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+
     ) {
-        Box(modifier = Modifier.fillMaxWidth()){
-            Row(modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically) {
+
+
+        TopAppBar(
+            modifier = Modifier.fillMaxWidth(),
+            title = {
+                Text(
+                    text = "Location Details",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            },
+            navigationIcon = {
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
-
-
-                Text(
-                    text = "Location Details",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onBackground,
-
-                    )
-
-            }
-
-        }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
+
         Text(
             text = "Name: ${location.name}",
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 22.sp),
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
@@ -66,7 +74,7 @@ fun LocationDetailScreen(locationId: Int, onBackClick: () -> Unit) {
 
         Text(
             text = "Type: ${location.type}",
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 22.sp),
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
@@ -74,7 +82,7 @@ fun LocationDetailScreen(locationId: Int, onBackClick: () -> Unit) {
 
         Text(
             text = "Dimension: ${location.dimension}",
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 22.sp),
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
@@ -89,3 +97,4 @@ fun PreviewLocationDetailScreen() {
         LocationDetailScreen(locationId = 1, onBackClick = {})
     }
 }
+

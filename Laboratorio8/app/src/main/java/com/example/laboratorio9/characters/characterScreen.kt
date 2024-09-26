@@ -37,7 +37,7 @@ fun CharactersScreen(onCharacterClick: (Int) -> Unit) {
                     Text(text = "Characters", color = Color.White, fontWeight = FontWeight.Bold)
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.secondary
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
             )
         }

@@ -1,16 +1,20 @@
 package com.example.laboratorio9.profile
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.draw.clip
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
+import com.example.laboratorio9.R
 
 @Composable
 fun profileRoute(
@@ -24,20 +28,27 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit ){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)  // Se añade el color de fondo
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-        Row(modifier = Modifier.fillMaxWidth()){
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .padding(16.dp)
+        ){
             Text(
                 text = "Profile",
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(bottom = 16.dp))
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
         }
 
-        // Sección con el nombre y el carné en filas
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -45,7 +56,15 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit ){
                 .padding(horizontal = 32.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            Icon(Icons.Default.Person, contentDescription = "Profile", modifier = Modifier.size(128.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.profile),
+                contentDescription = "Profile Image",
+                modifier = Modifier
+                    .size(170.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(
@@ -68,14 +87,12 @@ fun ProfileScreen(modifier: Modifier = Modifier, onLogoutClick: () -> Unit ){
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botón para cerrar sesión
+
             Button(onClick = onLogoutClick) {
                 Text("Cerrar sesión")
             }
 
         }
-
-
     }
 }
 

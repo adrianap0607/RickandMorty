@@ -72,7 +72,7 @@ fun CharacterDetailScreen(
             Box(
                 modifier = Modifier
                     .size(150.dp)
-                    .background(circleColor, CircleShape) 
+                    .background(circleColor, CircleShape)
             )
 
             Spacer(modifier = Modifier.height(16.dp))

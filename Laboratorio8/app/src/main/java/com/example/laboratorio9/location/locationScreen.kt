@@ -1,11 +1,18 @@
 package com.example.laboratorio9.location
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,12 +21,16 @@ import androidx.compose.ui.unit.dp
 import com.example.laboratorio9.locationinformation.Location
 import com.example.laboratorio9.locationinformation.LocationDb
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.ExperimentalMaterial3Api
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun locationRoute(onLocationClick: (Int) -> Unit){
+fun locationRoute(onLocationClick: (Int) -> Unit) {
     LocationScreen(onLocationClick = onLocationClick)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationScreen(onLocationClick: (Int) -> Unit) {
     val locationDb = LocationDb()
@@ -28,20 +39,37 @@ fun LocationScreen(onLocationClick: (Int) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
-        Box(modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.CenterStart){
-            Text(
-                text = "Locations",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(bottom = 16.dp))
-        }
+
+        TopAppBar(
+            modifier = Modifier.fillMaxWidth(),
+            title = {
+                Text(
+                    text = "Locations",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = { /* Acción de retroceso */ }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back",
+                        tint = Color.White
+                    )
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+        )
+
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
             items(locations) { location ->
                 LocationRow(location = location, onClick = { onLocationClick(location.id) })
@@ -74,7 +102,7 @@ fun LocationRow(location: Location, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewLocationScreen() {
-    laboratorio9Theme   {
+    laboratorio9Theme {
         LocationScreen(onLocationClick = {})
     }
 }

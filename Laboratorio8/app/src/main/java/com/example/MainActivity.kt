@@ -1,4 +1,4 @@
-package com.example.laboratorio9
+package com.example
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
