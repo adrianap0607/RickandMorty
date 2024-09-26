@@ -1,4 +1,4 @@
-package com.example.laboratorio8.characterDetails
+package com.example.laboratorio9.characterDetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.laboratorio8.informacion.CharacterDb
-import com.example.laboratorio8.ui.theme.laboratorio8Theme
+import com.example.laboratorio9.informacion.CharacterDb
+import com.example.laboratorio9.ui.theme.laboratorio9Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,7 +82,7 @@ fun CharacterDetailScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewCharacterDetailScreen() {
-    laboratorio8Theme {
+    laboratorio9Theme {
         CharacterDetailScreen(characterId = 1, onBackClick = {})
     }
 }

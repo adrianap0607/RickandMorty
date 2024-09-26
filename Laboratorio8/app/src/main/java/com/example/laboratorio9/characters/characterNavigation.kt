@@ -1,4 +1,4 @@
-package com.example.laboratorio8.characters
+package com.example.laboratorio9.characters
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxWidth

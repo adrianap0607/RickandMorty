@@ -1,4 +1,4 @@
-package com.example.laboratorio8.characters
+package com.example.laboratorio9.characters
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,9 +15,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.laboratorio8.informacion.Character
-import com.example.laboratorio8.informacion.CharacterDb
-import com.example.laboratorio8.ui.theme.laboratorio8Theme
+import com.example.laboratorio9.informacion.Character
+import com.example.laboratorio9.informacion.CharacterDb
+import com.example.laboratorio9.ui.theme.laboratorio9Theme
+import com.example.laboratorio9.ui.theme.laboratorio9Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,7 +86,7 @@ fun CharacterRow(character: Character, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewCharactersScreen() {
-    laboratorio8Theme {
+    laboratorio9Theme {
         CharactersScreen(onCharacterClick = {})
     }
 }

@@ -1,9 +1,14 @@
-package com.example.laboratorio8.login
+package com.example.laboratorio9.login
+
+
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
+
+// Importa la función LoginScreen
+import com.example.laboratorio9.login.LoginScreen
 
 @Serializable
 data object LoginDestination

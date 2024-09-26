@@ -1,4 +1,4 @@
-package com.example.laboratorio8.characterDetails
+package com.example.laboratorio9.characterDetails
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

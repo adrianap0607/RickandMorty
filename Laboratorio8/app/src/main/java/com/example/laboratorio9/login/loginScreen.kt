@@ -1,4 +1,4 @@
-package com.example.laboratorio8.login
+package com.example.laboratorio9.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -17,8 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.laboratorio8.R
-import com.example.laboratorio8.ui.theme.laboratorio8Theme
+import com.example.laboratorio9.R
+import com.example.laboratorio9.ui.theme.laboratorio9Theme
 
 @Composable
 fun LoginScreen(onLoginClick: () -> Unit = {}) {
@@ -31,7 +31,6 @@ fun LoginScreen(onLoginClick: () -> Unit = {}) {
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-
         Image(
             painter = painterResource(id = R.drawable.rickandmorty),
             contentDescription = "Logo Rick and Morty",
@@ -41,7 +40,6 @@ fun LoginScreen(onLoginClick: () -> Unit = {}) {
         )
 
         Spacer(modifier = Modifier.height(32.dp))
-
 
         Button(
             onClick = { onLoginClick() },
@@ -73,7 +71,7 @@ fun LoginScreen(onLoginClick: () -> Unit = {}) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-    laboratorio8Theme {
+    laboratorio9Theme {
         LoginScreen()
     }
 }
