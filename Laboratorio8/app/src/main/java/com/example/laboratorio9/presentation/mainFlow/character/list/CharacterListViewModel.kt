@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class CharacterListViewModel : ViewModel() {
 
-    // Estado interno del ViewModel utilizando MutableStateFlow
+
     private val _characterState = MutableStateFlow(CharacterState(isLoading = true))
     val characterState: StateFlow<CharacterState> = _characterState
 

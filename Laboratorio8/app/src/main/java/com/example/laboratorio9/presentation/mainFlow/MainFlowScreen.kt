@@ -36,8 +36,6 @@ fun MainFlowScreen(
     }
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
     bottomBarVisible = if (currentDestination != null) {
-
-
         topLevelDestinations.any { destination ->
             /*
                 Función de compose que compara si el destination actual (pantalla que estamos viendo)

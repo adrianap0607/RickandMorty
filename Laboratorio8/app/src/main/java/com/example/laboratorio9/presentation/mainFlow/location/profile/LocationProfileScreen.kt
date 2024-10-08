@@ -1,26 +1,11 @@
 package com.example.laboratorio9.presentation.mainFlow.location.profile
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.laboratorio9.data.model.Location
+import com.example.laboratorio9.presentation.mainFlow.ErrorScreen
+import com.example.laboratorio9.presentation.mainFlow.LoadingScreen
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
 
 @Composable
@@ -37,13 +24,15 @@ fun LocationProfileRoute(
     onNavigateBack: () -> Unit,
     viewModel: LocationProfileViewModel = viewModel()
 ) {
+
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     LocationProfileScreen(
         state = state,
-        onGetInfoClick = {
-            viewModel.getLocationData()
-        },
-        onNavigateBack = onNavigateBack
+        onGetInfoClick = { viewModel.getLocationData() },
+        onNavigateBack = onNavigateBack,
+        onLoadingClick = { viewModel.onLoadingClick() },
+        onRetryClick = { viewModel.retryLoading() }
     )
 }
 
@@ -53,15 +42,13 @@ private fun LocationProfileScreen(
     state: LocationProfileState,
     onGetInfoClick: () -> Unit,
     onNavigateBack: () -> Unit,
+    onLoadingClick: () -> Unit,
+    onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-    ) {
+    Column(modifier = modifier) {
         TopAppBar(
-            title = {
-                Text("Location Details")
-            },
+            title = { Text("Location Details") },
             navigationIcon = {
                 IconButton(onClick = onNavigateBack) {
                     Icon(Icons.Default.ArrowBack, contentDescription = null)
@@ -69,9 +56,10 @@ private fun LocationProfileScreen(
             }
         )
         LocationProfileContent(
-            location = state.data,
-            isLoading = state.isLoading,
+            state = state,
             onGetInfoClick = onGetInfoClick,
+            onLoadingClick = onLoadingClick,
+            onRetryClick = onRetryClick,
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -79,18 +67,29 @@ private fun LocationProfileScreen(
 
 @Composable
 private fun LocationProfileContent(
-    location: Location?,
-    isLoading: Boolean,
+    state: LocationProfileState,
     onGetInfoClick: () -> Unit,
+    onLoadingClick: () -> Unit,
+    onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
         when {
-            isLoading -> {
-                Text("Cargando, paciente.")
+            state.isLoading -> {
+
+                LoadingScreen(modifier = Modifier.clickable { onLoadingClick() })
             }
 
-            location == null -> {
+            state.hasError -> {
+
+                ErrorScreen(
+                    errorMessage = "Error al cargar la información de la ubicación. Intenta de nuevo.",
+                    onRetry = onRetryClick
+                )
+            }
+
+            state.data == null -> {
+
                 Button(
                     onClick = onGetInfoClick,
                     modifier = Modifier.align(Alignment.Center)
@@ -100,6 +99,7 @@ private fun LocationProfileContent(
             }
 
             else -> {
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -109,23 +109,23 @@ private fun LocationProfileContent(
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = location.name,
+                        text = state.data.name,
                         style = MaterialTheme.typography.titleLarge
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     LocationProfilePropItem(
                         title = "ID:",
-                        value = location.id.toString(),
+                        value = state.data.id.toString(),
                         modifier = Modifier.fillMaxWidth()
                     )
                     LocationProfilePropItem(
                         title = "Type:",
-                        value = location.type,
+                        value = state.data.type,
                         modifier = Modifier.fillMaxWidth()
                     )
                     LocationProfilePropItem(
                         title = "Dimensions:",
-                        value = location.dimension,
+                        value = state.data.dimension,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -161,6 +161,8 @@ private fun PreviewLocationProfileScreen() {
                 ),
                 onNavigateBack = { },
                 onGetInfoClick = { },
+                onLoadingClick = { },
+                onRetryClick = { },
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -170,7 +172,7 @@ private fun PreviewLocationProfileScreen() {
 @Preview
 @Composable
 private fun PreviewLoadingLocationProfileScreen() {
-    laboratorio9Theme() {
+    laboratorio9Theme {
         Surface {
             LocationProfileScreen(
                 state = LocationProfileState(
@@ -179,6 +181,8 @@ private fun PreviewLoadingLocationProfileScreen() {
                 ),
                 onNavigateBack = { },
                 onGetInfoClick = { },
+                onLoadingClick = { },
+                onRetryClick = { },
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -188,7 +192,7 @@ private fun PreviewLoadingLocationProfileScreen() {
 @Preview
 @Composable
 private fun PreviewEmptyLocationProfileScreen() {
-    laboratorio9Theme() {
+    laboratorio9Theme {
         Surface {
             LocationProfileScreen(
                 state = LocationProfileState(
@@ -197,6 +201,8 @@ private fun PreviewEmptyLocationProfileScreen() {
                 ),
                 onNavigateBack = { },
                 onGetInfoClick = { },
+                onLoadingClick = { },
+                onRetryClick = { },
                 modifier = Modifier.fillMaxSize()
             )
         }

@@ -9,23 +9,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/**
- * ViewModel para gestionar el estado del perfil de la ubicación.
- */
+
 class LocationProfileViewModel : ViewModel() {
 
-    // Estado interno del ViewModel utilizando MutableStateFlow
-    private val _uiState = MutableStateFlow(LocationProfileState(isLoading = true)) // Inicializa con isLoading = true
+
+    private val _uiState = MutableStateFlow(LocationProfileState(isLoading = true))
     val uiState: StateFlow<LocationProfileState> = _uiState
 
-    private val locationDb = LocationDb() // Instancia de la base de datos de ubicaciones
+    private val locationDb = LocationDb()
 
-    /**
-     * Función para cargar la información del perfil de la ubicación.
-     */
+
     fun getLocationData() {
         viewModelScope.launch {
-            // Establecer estado de carga
+
             _uiState.update { state ->
                 state.copy(
                     isLoading = true,
@@ -36,7 +32,7 @@ class LocationProfileViewModel : ViewModel() {
             // Simulación de carga de datos con un retraso de 2 segundos
             delay(2000)
 
-            // Obtener una ubicación aleatoria de la base de datos (puedes cambiarlo a obtener por ID si es necesario)
+
             val location = locationDb.getAllLocations().firstOrNull()
 
             // Actualizar el estado con la ubicación obtenida y finalizar la carga

@@ -12,7 +12,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
 import com.example.laboratorio9.presentation.navigation.AppNavigation
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.jetbrains.kotlin.serialization)
-
 }
 
 android {
@@ -52,7 +51,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -61,13 +59,13 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.compose.navigation)
+
     implementation(libs.kotlinx.serialization.json)
     implementation("androidx.compose.material:material-icons-extended:1.5.1")
 
-
-
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.common.ktx)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
