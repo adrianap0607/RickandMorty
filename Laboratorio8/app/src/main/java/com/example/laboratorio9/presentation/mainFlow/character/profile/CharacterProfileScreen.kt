@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.laboratorio9.data.model.Character
-import com.example.laboratorio9.data.source.CharacterDb
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
 import com.example.laboratorio9.presentation.mainFlow.ErrorScreen
 import com.example.laboratorio9.presentation.mainFlow.LoadingScreen

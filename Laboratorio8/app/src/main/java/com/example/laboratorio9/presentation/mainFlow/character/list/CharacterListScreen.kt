@@ -1,4 +1,5 @@
 package com.example.laboratorio9.presentation.mainFlow.character.list
+
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,76 +13,61 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.laboratorio9.data.model.Character
 import com.example.laboratorio9.data.source.CharacterDb
-import com.example.laboratorio9.presentation.mainFlow.ErrorScreen
-import com.example.laboratorio9.presentation.mainFlow.LoadingScreen
+import com.example.laboratorio9.presentation.room.CharacterDao
+import com.example.laboratorio9.presentation.room.CharacterEntity
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
 
 @Composable
 fun CharacterListRoute(
+    characterDao: CharacterDao,
     onCharacterClick: (Int) -> Unit,
-    viewModel: CharacterListViewModel = viewModel()
 ) {
+    // Crear el ViewModel utilizando CharacterDao
+    val viewModel: CharacterListViewModel = viewModel(
+        factory = CharacterListViewModelFactory(characterDao)
+    )
+
+    // Observar el estado del ViewModel
     val characterState by viewModel.characterState.collectAsStateWithLifecycle()
 
+    // Llamar a la pantalla pasando los parámetros correctos
     CharacterListScreen(
-        characterState = characterState,
+        characters = characterState.data, // Ajustado para ser lista de CharacterEntity
         onCharacterClick = onCharacterClick,
-        onLoadingClick = { viewModel.onLoadingClick() },
-        onRetry = { viewModel.retryLoading() },
         modifier = Modifier.fillMaxSize()
     )
 }
 
 @Composable
 private fun CharacterListScreen(
-    characterState: CharacterState,
+    characters: List<CharacterEntity>, // Ajustar el tipo a CharacterEntity
     onCharacterClick: (Int) -> Unit,
-    onLoadingClick: () -> Unit,
-    onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when {
-        characterState.isLoading -> {
-            // Pantalla de carga
-            LoadingScreen(modifier = modifier.clickable { onLoadingClick() })
-        }
-        characterState.hasError -> {
-            // Pantalla de error con botón de reintentar
-            ErrorScreen(
-                errorMessage = "Error al obtener listado de personajes. Intenta de nuevo.",
-                onRetry = onRetry
+    LazyColumn(modifier = modifier) {
+        items(characters) { characterEntity ->
+            // Ajustar la función de lista para trabajar con CharacterEntity
+            CharacterItem(
+                character = characterEntity, // CharacterEntity en lugar de Character
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onCharacterClick(characterEntity.id) }
             )
-        }
-        else -> {
-            // Pantalla original de lista de personajes
-            LazyColumn(modifier = modifier) {
-                items(characterState.data) { character ->
-                    CharacterItem(
-                        character = character,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { onCharacterClick(character.id) }
-                    )
-                }
-            }
         }
     }
 }
 
 @Composable
 private fun CharacterItem(
-    character: Character,
+    character: CharacterEntity, // Ajustar a CharacterEntity
     modifier: Modifier = Modifier
 ) {
     val imageBackgroundColors = listOf(
@@ -122,7 +108,6 @@ private fun CharacterItem(
     }
 }
 
-
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
@@ -131,13 +116,10 @@ private fun PreviewCharacterListScreen() {
         Surface {
             val db = CharacterDb()
             CharacterListScreen(
-                characterState = CharacterState(data = db.getAllCharacters().take(6)),
+                characters = db.getAllCharacters().take(6), // Trabaja con CharacterEntity
                 onCharacterClick = {},
-                onLoadingClick = {},
-                onRetry = {},
-                modifier = Modifier.fillMaxSize())
+                modifier = Modifier.fillMaxSize()
+            )
         }
-
-
     }
 }

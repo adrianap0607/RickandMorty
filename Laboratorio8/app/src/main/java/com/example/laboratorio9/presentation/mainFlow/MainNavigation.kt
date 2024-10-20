@@ -5,6 +5,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.laboratorio9.presentation.login.DataStoreUserPrefs
+import com.example.laboratorio9.presentation.room.CharacterDao
+import com.example.laboratorio9.presentation.room.LocationDao
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -16,12 +19,16 @@ fun NavController.navigateToMainGraph(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.mainNavigationGraph(
     onLogOutClick: () -> Unit,
+    characterDao: CharacterDao,
+    locationDao: LocationDao,
+    userPrefs: DataStoreUserPrefs
 ) {
     composable<MainNavigationGraph> {
         val nestedNavController = rememberNavController()
         MainFlowScreen(
             navController = nestedNavController,
-            onLogOutClick = onLogOutClick
+            onLogOutClick = onLogOutClick,
+            userPrefs = userPrefs
         )
     }
 }

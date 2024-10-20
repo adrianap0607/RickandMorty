@@ -29,4 +29,11 @@ class DataStoreUserPrefs(
             preferences[NAME_KEY]
         }
     }
+
+    suspend fun clearName(){
+        dataStore.edit { preferences ->
+            preferences.remove(NAME_KEY)
+
+        }
+    }
 }

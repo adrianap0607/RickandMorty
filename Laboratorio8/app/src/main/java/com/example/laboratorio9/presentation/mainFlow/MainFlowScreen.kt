@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.laboratorio9.presentation.login.DataStoreUserPrefs
 import com.example.laboratorio9.presentation.mainFlow.character.CharacterNavGraph
 import com.example.laboratorio9.presentation.mainFlow.character.characterGraph
 import com.example.laboratorio9.presentation.mainFlow.location.locationsGraph
@@ -29,7 +30,8 @@ import com.example.laboratorio9.presentation.navigation.BottomNavBar
 @Composable
 fun MainFlowScreen(
     onLogOutClick: () -> Unit,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    userPrefs: DataStoreUserPrefs
 ) {
     var bottomBarVisible by rememberSaveable {
         mutableStateOf(false)
@@ -37,10 +39,6 @@ fun MainFlowScreen(
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination
     bottomBarVisible = if (currentDestination != null) {
         topLevelDestinations.any { destination ->
-            /*
-                Función de compose que compara si el destination actual (pantalla que estamos viendo)
-                es igual al destination que estamos evaluando en la función "any".
-             */
             currentDestination.hasRoute(destination)
         }
     } else {
@@ -49,28 +47,17 @@ fun MainFlowScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-
             AnimatedVisibility(
                 visible = bottomBarVisible,
                 enter = slideInVertically(initialOffsetY = { it }),
                 exit = slideOutVertically(targetOffsetY = { it }),
             ) {
                 BottomNavBar(
-
                     checkItemSelected = { destination ->
                         currentDestination?.hierarchy?.any { it.hasRoute(destination::class) } ?: false
                     },
                     onNavItemClick = { destination ->
                         navController.navigate(destination) {
-                            /*
-                                Estas líneas nos permiten lograr lo siguiente:
-                                * No almacenamos múltiples instancias de la misma pantalla en
-                                nuestro backstack
-                                * Si estamos en Characters y hacemos click en ese elemento nuevamente,
-                                no creará una nueva pantalla
-                                * Si regresamos a Characters luego de estar en Locations, el estado
-                                de Characters será recuperado.
-                             */
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
@@ -85,12 +72,15 @@ fun MainFlowScreen(
         NavHost(
             navController = navController,
             startDestination = CharacterNavGraph,
-            modifier = Modifier.fillMaxSize().padding(innerPadding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
             characterGraph(navController)
             locationsGraph(navController)
             profileScreen(
-                onLogOutClick = onLogOutClick
+                onLogOutClick = onLogOutClick,
+                userPrefs = userPrefs // Pasar userPrefs a profileScreen
             )
         }
     }

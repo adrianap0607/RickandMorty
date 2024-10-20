@@ -24,10 +24,12 @@ import com.example.laboratorio9.data.model.Location
 import com.example.laboratorio9.data.source.LocationDb
 import com.example.laboratorio9.presentation.mainFlow.ErrorScreen
 import com.example.laboratorio9.presentation.mainFlow.LoadingScreen
+import com.example.laboratorio9.presentation.room.LocationDao
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
 
 @Composable
 fun LocationListRoute(
+    locationDao: LocationDao,
     onLocationClick: (Int) -> Unit,
     viewModel: LocationListViewModel = viewModel()
 ) {

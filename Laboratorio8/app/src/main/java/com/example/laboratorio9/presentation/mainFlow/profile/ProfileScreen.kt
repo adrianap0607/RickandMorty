@@ -21,25 +21,37 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.laboratorio9.presentation.login.DataStoreUserPrefs
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
+
 
 @Composable
 fun ProfileRoute(
     onLogOutClick: () -> Unit,
-
+    userPrefs: DataStoreUserPrefs,
+    viewModel: ProfileViewModel = viewModel(factory = ProfileViewModelFactory(userPrefs))
 ) {
+    val userNameState = viewModel.userName.collectAsState(initial = "")
+
     ProfileScreen(
-        onLogOutClick = onLogOutClick,
+        userName = userNameState.value ?: "Desconocido",
+        onLogOutClick = {
+            viewModel.logOut()
+            onLogOutClick()
+        },
         modifier = Modifier.fillMaxSize()
     )
 }
 
 @Composable
 fun ProfileScreen(
+    userName: String,
     onLogOutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -64,20 +76,13 @@ fun ProfileScreen(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = "Nombre:")
-            Text(text = "Adriana Palacios")
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "Carné:")
-            Text(text = "23044")
+            Text(text = userName) // Mostrar el nombre recuperado
         }
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedButton(onClick = onLogOutClick) {
@@ -85,6 +90,7 @@ fun ProfileScreen(
         }
     }
 }
+
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
@@ -92,6 +98,7 @@ private fun PreviewProfileScreen() {
     laboratorio9Theme {
         Surface {
             ProfileScreen(
+                userName =  "Desconocido",
                 onLogOutClick = { /*TODO*/ },
                 modifier = Modifier.fillMaxSize()
             )
