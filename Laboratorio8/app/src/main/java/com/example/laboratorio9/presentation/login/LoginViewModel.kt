@@ -1,45 +1,67 @@
 package com.example.laboratorio9.presentation.login
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.laboratorio9.data.model.Character
+import com.example.laboratorio9.data.model.Location
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
-import com.example.laboratorio9.data.model.Character
-import com.example.laboratorio9.data.model.Location
-import com.example.laboratorio9.presentation.login.DataStoreUserPrefs
 import com.example.laboratorio9.presentation.room.CharacterDao
 import com.example.laboratorio9.presentation.room.LocationDao
-import com.example.laboratorio9.presentation.room.toEntity
-
+import com.example.laboratorio9.presentation.room.CharacterEntity
+import com.example.laboratorio9.presentation.room.LocationEntity
 
 class LoginViewModel(
     private val userPrefs: DataStoreUserPrefs
 ): ViewModel() {
 
-    // Guardar el nombre del usuario en DataStore
+    // Guardar el nombre de usuario
     fun saveUserName(name: String) {
         viewModelScope.launch {
             userPrefs.setName(name)
         }
     }
 
-    // Obtener el nombre del usuario desde DataStore
+    // Obtener el nombre de usuario guardado
     val userName: Flow<String?> = userPrefs.getName()
 
-    // Sincronización de datos iniciales a Room
+    // Función de sincronización de datos
     fun syncData(
-        characters: List<Character>,  // Lista de personajes desde CharacterDb
-        locations: List<Location>,    // Lista de ubicaciones desde LocationDb
-        characterDao: CharacterDao,   // DAO de personajes para Room
-        locationDao: LocationDao,     // DAO de ubicaciones para Room
-        onSyncComplete: () -> Unit    // Callback cuando la sincronización termina
+        characters: List<Character>, // Recibe lista de Character
+        locations: List<Location>,   // Recibe lista de Location
+        characterDao: CharacterDao,
+        locationDao: LocationDao,
+        onSyncComplete: () -> Unit
     ) {
         viewModelScope.launch {
-            delay(2000)  // Simular tiempo de sincronización (2 segundos)
-            characterDao.insertAll(characters.map { it.toEntity() }) // Insertar personajes en Room
-            locationDao.insertAll(locations.map { it.toEntity() })   // Insertar ubicaciones en Room
-            onSyncComplete() // Llamar callback cuando termina
+            delay(2000)
+
+            // Convertir Character a CharacterEntity antes de insertarlo en el DAO
+            val characterEntities = characters.map { character ->
+                CharacterEntity(
+                    id = character.id,
+                    name = character.name,
+                    status = character.status,
+                    species = character.species,
+                    gender = character.gender
+                )
+            }
+
+            // Convertir Location a LocationEntity antes de insertarlo en el DAO
+            val locationEntities = locations.map { location ->
+                LocationEntity(
+                    id = location.id,
+                    name = location.name,
+                    type = location.type,
+                    dimension = location.dimension
+                )
+            }
+
+            // Insertar las entidades en los DAOs
+            characterDao.insertAll(characterEntities)
+            locationDao.insertAll(locationEntities)
+
+            onSyncComplete()
         }
     }
 }

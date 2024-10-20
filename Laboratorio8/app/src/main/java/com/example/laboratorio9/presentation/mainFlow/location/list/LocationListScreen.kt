@@ -1,5 +1,4 @@
 package com.example.laboratorio9.presentation.mainFlow.location.list
-
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -31,13 +30,15 @@ import com.example.laboratorio9.ui.theme.laboratorio9Theme
 fun LocationListRoute(
     locationDao: LocationDao,
     onLocationClick: (Int) -> Unit,
-    viewModel: LocationListViewModel = viewModel()
+    viewModel: LocationListViewModel = viewModel(
+        factory = LocationListViewModelFactory(locationDao)
+    )
 ) {
     // Colecta el estado actual del ViewModel
     val locationListState by viewModel.locationListState.collectAsState()
 
     LocationListScreen(
-        locationState = locationListState, // Usar LocationListState en lugar de LocationState
+        locationState = locationListState,
         onLocationClick = onLocationClick,
         onLoadingClick = { viewModel.onLoadingClick() },
         onRetry = { viewModel.retryLoading() },
@@ -47,7 +48,7 @@ fun LocationListRoute(
 
 @Composable
 private fun LocationListScreen(
-    locationState: LocationListState, // Cambiar el tipo a LocationListState
+    locationState: LocationListState,
     onLocationClick: (Int) -> Unit,
     onLoadingClick: () -> Unit,
     onRetry: () -> Unit,
@@ -132,7 +133,7 @@ private fun PreviewLocationListScreen() {
         Surface {
             val db = LocationDb()
             LocationListScreen(
-                locationState = LocationListState(data = db.getAllLocations().take(6)), // Usar LocationListState aquí
+                locationState = LocationListState(data = db.getAllLocations().take(6)),
                 onLocationClick = {},
                 onLoadingClick = {},
                 onRetry = {},

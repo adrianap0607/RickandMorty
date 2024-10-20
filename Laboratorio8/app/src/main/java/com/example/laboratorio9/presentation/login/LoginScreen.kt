@@ -30,6 +30,8 @@ import com.example.laboratorio9.data.source.LocationDb
 import com.example.laboratorio9.presentation.room.CharacterDao
 import com.example.laboratorio9.presentation.room.LocationDao
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
+import com.example.laboratorio9.data.model.Character
+
 
 @Composable
 fun LoginRoute(
@@ -40,17 +42,21 @@ fun LoginRoute(
     characterDb: CharacterDb,
     locationDb: LocationDb
 ) {
+
     val viewModel: LoginViewModel = viewModel(
         factory = LoginViewModelFactory(userPrefs)
     )
     var name by remember { mutableStateOf("") }
     var isSyncing by remember { mutableStateOf(false)}
+
+
     LoginScreen(
         name = name,
         onNameChange = { name = it },
         onLoginClick = {
             isSyncing = true
             viewModel.saveUserName(name)
+
 
             val characters = characterDb.getAllCharacters()
             val locations = locationDb.getAllLocations()
@@ -96,7 +102,7 @@ private fun LoginScreen(
                     modifier=Modifier.fillMaxWidth()
                 ) {
                     Text(text = "Iniciar sesión")
-                    
+
                 }
             }
 

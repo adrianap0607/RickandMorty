@@ -8,6 +8,7 @@ import com.example.laboratorio9.presentation.mainFlow.location.list.LocationList
 import com.example.laboratorio9.presentation.mainFlow.location.list.locationListScreen
 import com.example.laboratorio9.presentation.mainFlow.location.profile.locationProfileScreen
 import com.example.laboratorio9.presentation.mainFlow.location.profile.navigateToLocationProfileScreen
+import com.example.laboratorio9.presentation.room.LocationDao
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -18,12 +19,14 @@ fun NavController.navigateToLocationsGraph(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.locationsGraph(
-    navController: NavController
+    navController: NavController,
+    locationDao: LocationDao
 ) {
     navigation<LocationsNavGraph>(
         startDestination = LocationListDestination
     ) {
         locationListScreen(
+            locationDao = locationDao,
             onLocationClick = navController::navigateToLocationProfileScreen
         )
         locationProfileScreen(

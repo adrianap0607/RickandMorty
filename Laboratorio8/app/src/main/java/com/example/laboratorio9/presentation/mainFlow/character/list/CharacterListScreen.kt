@@ -1,5 +1,4 @@
 package com.example.laboratorio9.presentation.mainFlow.character.list
-
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,54 +19,67 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.laboratorio9.data.model.Character
 import com.example.laboratorio9.data.source.CharacterDb
-import com.example.laboratorio9.presentation.room.CharacterDao
-import com.example.laboratorio9.presentation.room.CharacterEntity
+import com.example.laboratorio9.presentation.mainFlow.ErrorScreen
+import com.example.laboratorio9.presentation.mainFlow.LoadingScreen
 import com.example.laboratorio9.ui.theme.laboratorio9Theme
 
 @Composable
 fun CharacterListRoute(
-    characterDao: CharacterDao,
     onCharacterClick: (Int) -> Unit,
+    viewModel: CharacterListViewModel = viewModel()
 ) {
-    // Crear el ViewModel utilizando CharacterDao
-    val viewModel: CharacterListViewModel = viewModel(
-        factory = CharacterListViewModelFactory(characterDao)
-    )
-
-    // Observar el estado del ViewModel
     val characterState by viewModel.characterState.collectAsStateWithLifecycle()
 
-    // Llamar a la pantalla pasando los parámetros correctos
     CharacterListScreen(
-        characters = characterState.data, // Ajustado para ser lista de CharacterEntity
+        characterState = characterState,
         onCharacterClick = onCharacterClick,
+        onLoadingClick = { viewModel.onLoadingClick() },
+        onRetry = { viewModel.retryLoading() },
         modifier = Modifier.fillMaxSize()
     )
 }
 
 @Composable
 private fun CharacterListScreen(
-    characters: List<CharacterEntity>, // Ajustar el tipo a CharacterEntity
+    characterState: CharacterState,
     onCharacterClick: (Int) -> Unit,
+    onLoadingClick: () -> Unit,
+    onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
-        items(characters) { characterEntity ->
-            // Ajustar la función de lista para trabajar con CharacterEntity
-            CharacterItem(
-                character = characterEntity, // CharacterEntity en lugar de Character
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onCharacterClick(characterEntity.id) }
+    when {
+        characterState.isLoading -> {
+            // Pantalla de carga
+            LoadingScreen(modifier = modifier.clickable { onLoadingClick() })
+        }
+        characterState.hasError -> {
+            // Pantalla de error con botón de reintentar
+            ErrorScreen(
+                errorMessage = "Error al obtener listado de personajes. Intenta de nuevo.",
+                onRetry = onRetry
             )
+        }
+        else -> {
+            // Pantalla original de lista de personajes
+            LazyColumn(modifier = modifier) {
+                items(characterState.data) { character ->
+                    CharacterItem(
+                        character = character,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onCharacterClick(character.id) }
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun CharacterItem(
-    character: CharacterEntity, // Ajustar a CharacterEntity
+    character: Character,
     modifier: Modifier = Modifier
 ) {
     val imageBackgroundColors = listOf(
@@ -108,6 +120,7 @@ private fun CharacterItem(
     }
 }
 
+
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
@@ -116,10 +129,13 @@ private fun PreviewCharacterListScreen() {
         Surface {
             val db = CharacterDb()
             CharacterListScreen(
-                characters = db.getAllCharacters().take(6), // Trabaja con CharacterEntity
+                characterState = CharacterState(data = db.getAllCharacters().take(6)),
                 onCharacterClick = {},
-                modifier = Modifier.fillMaxSize()
-            )
+                onLoadingClick = {},
+                onRetry = {},
+                modifier = Modifier.fillMaxSize())
         }
+
+
     }
 }

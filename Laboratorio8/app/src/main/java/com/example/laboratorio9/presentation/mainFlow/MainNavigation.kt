@@ -28,7 +28,8 @@ fun NavGraphBuilder.mainNavigationGraph(
         MainFlowScreen(
             navController = nestedNavController,
             onLogOutClick = onLogOutClick,
-            userPrefs = userPrefs
+            userPrefs = userPrefs,
+            locationDao = locationDao
         )
     }
 }

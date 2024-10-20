@@ -1,5 +1,4 @@
 package com.example.laboratorio9.presentation.mainFlow
-
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -26,12 +25,14 @@ import com.example.laboratorio9.presentation.mainFlow.location.locationsGraph
 import com.example.laboratorio9.presentation.mainFlow.profile.profileScreen
 import com.example.laboratorio9.presentation.navigation.topLevelDestinations
 import com.example.laboratorio9.presentation.navigation.BottomNavBar
+import com.example.laboratorio9.presentation.room.LocationDao
 
 @Composable
 fun MainFlowScreen(
     onLogOutClick: () -> Unit,
     navController: NavHostController = rememberNavController(),
-    userPrefs: DataStoreUserPrefs
+    userPrefs: DataStoreUserPrefs,
+    locationDao: LocationDao
 ) {
     var bottomBarVisible by rememberSaveable {
         mutableStateOf(false)
@@ -77,10 +78,10 @@ fun MainFlowScreen(
                 .padding(innerPadding)
         ) {
             characterGraph(navController)
-            locationsGraph(navController)
+            locationsGraph(navController, locationDao)
             profileScreen(
                 onLogOutClick = onLogOutClick,
-                userPrefs = userPrefs // Pasar userPrefs a profileScreen
+                userPrefs = userPrefs
             )
         }
     }
