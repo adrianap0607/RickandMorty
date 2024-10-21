@@ -5,7 +5,7 @@ package com.example.laboratorio9.presentation.room
 import com.example.laboratorio9.data.model.Character
 import com.example.laboratorio9.data.model.Location
 
-// Función de extensión para convertir Character a CharacterEntity
+
 fun CharacterEntity.toCharacter(): Character {
     return Character(
         id = this.id,
@@ -18,7 +18,7 @@ fun CharacterEntity.toCharacter(): Character {
     )
 }
 
-// Función de extensión para convertir Location a LocationEntity
+
 fun LocationEntity.toLocation(): Location {
     return Location(
         id = this.id,

@@ -34,7 +34,7 @@ fun LocationListRoute(
         factory = LocationListViewModelFactory(locationDao)
     )
 ) {
-    // Colecta el estado actual del ViewModel
+
     val locationListState by viewModel.locationListState.collectAsState()
 
     LocationListScreen(

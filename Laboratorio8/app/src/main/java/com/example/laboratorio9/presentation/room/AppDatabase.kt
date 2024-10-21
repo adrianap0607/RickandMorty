@@ -13,7 +13,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun locationDao(): LocationDao
 
     companion object {
-        // Singleton para evitar múltiples instancias de la base de datos
+
         @Volatile
         private var INSTANCE: AppDatabase? = null
 

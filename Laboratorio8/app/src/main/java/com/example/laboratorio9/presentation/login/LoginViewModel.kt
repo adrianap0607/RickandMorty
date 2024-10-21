@@ -36,7 +36,7 @@ class LoginViewModel(
         viewModelScope.launch {
             delay(2000)
 
-            // Convertir Character a CharacterEntity antes de insertarlo en el DAO
+
             val characterEntities = characters.map { character ->
                 CharacterEntity(
                     id = character.id,
@@ -47,7 +47,7 @@ class LoginViewModel(
                 )
             }
 
-            // Convertir Location a LocationEntity antes de insertarlo en el DAO
+
             val locationEntities = locations.map { location ->
                 LocationEntity(
                     id = location.id,
@@ -57,7 +57,7 @@ class LoginViewModel(
                 )
             }
 
-            // Insertar las entidades en los DAOs
+
             characterDao.insertAll(characterEntities)
             locationDao.insertAll(locationEntities)
 

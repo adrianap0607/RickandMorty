@@ -12,11 +12,11 @@ import kotlinx.coroutines.launch
 
 class CharacterListViewModel : ViewModel() {
 
-    // Estado interno del ViewModel utilizando MutableStateFlow
+
     private val _characterState = MutableStateFlow(CharacterState(isLoading = true))
     val characterState: StateFlow<CharacterState> = _characterState
 
-    private val characterDb = CharacterDb() // Instancia de la base de datos de personajes
+    private val characterDb = CharacterDb()
 
     init {
         // Inicia la carga de personajes al inicializar el ViewModel
