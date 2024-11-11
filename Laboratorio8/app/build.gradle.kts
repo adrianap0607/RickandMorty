@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.laboratorio9"
+    namespace = "com.uvg.laboratorio10"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.laboratorio9"
+        applicationId = "com.uvg.laboratorio10"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -49,9 +49,17 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+    }
+
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -60,18 +68,22 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.compose.navigation)
+    implementation(libs.kotlinx.serialization.json)
+    implementation("androidx.compose.material:material-icons-extended:1.5.1")
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.splashscreen)
+
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
     // Esta librería es necesaria para poder usar corrutinas y flows con Room
     implementation(libs.androidx.room.ktx)
-    implementation(libs.kotlinx.serialization.json)
-    implementation("androidx.compose.material:material-icons-extended:1.5.1")
+
+    implementation(libs.bundles.ktor)
+
+
 
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.navigation.common.ktx)
-    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
